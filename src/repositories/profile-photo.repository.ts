@@ -5,7 +5,8 @@ import {ProfilePhoto, ProfilePhotoRelations} from '../models';
 
 export class ProfilePhotoRepository extends DefaultCrudRepository<
   ProfilePhoto,
-  typeof ProfilePhoto.prototype.id,
+//  typeof ProfilePhoto.prototype.id,
+  typeof ProfilePhoto.prototype.user,
   ProfilePhotoRelations
 > {
   constructor(

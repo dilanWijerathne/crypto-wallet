@@ -16,8 +16,7 @@ import {inject} from '@loopback/core';
 import {model, property, repository} from '@loopback/repository';
 import {
   get,
-  getModelSchemaRef,
-  post,
+  getModelSchemaRef, param, post,
   requestBody,
   SchemaObject
 } from '@loopback/rest';
@@ -121,6 +120,45 @@ export class UserController {
   ): Promise<string> {
     return currentUserProfile[securityId];
   }
+
+
+
+/*
+  @get('/whoAmI/{id}')
+  @response(200, {
+    description: 'user model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(User, {includeRelations: true}),
+      },
+    },
+  })
+*/
+
+  @post('/whoAmI/{id}', {
+    responses: {
+      '200': {
+        description: 'WhoAmI now',
+        content: {
+          'application/json': {
+            schema: {
+              'x-ts-type': User,
+            },
+          },
+        },
+      },
+    },
+  })
+  async findById(
+    @param.path.string('id') id: string,
+  //  @param.filter(User, {exclude: 'where'}) filter?: FilterExcludingWhere<User>
+  ): Promise<User> {
+    return this.userRepository.findById(id);
+  }
+
+
+
+
 
   @post('/signup', {
     responses: {

@@ -28,10 +28,10 @@ export class ProfilePhoto extends Entity {
   status: boolean;
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  user: number;
+  user: string;
 
   @property({
     type: 'date',

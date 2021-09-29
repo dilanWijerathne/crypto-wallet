@@ -1,9 +1,7 @@
 import {
   Count,
   CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
+  Filter, repository,
   Where
 } from '@loopback/repository';
 import {
@@ -89,6 +87,7 @@ export class ProfilePhotoController {
     return this.profilePhotoRepository.updateAll(profilePhoto, where);
   }
 
+/*
   @get('/profile-photos/{id}')
   @response(200, {
     description: 'ProfilePhoto model instance',
@@ -106,13 +105,37 @@ export class ProfilePhotoController {
   }
 
 
+*/
+
+
+  @get('/profile-photos/{userId}')
+  @response(200, {
+    description: 'ProfilePhoto model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(ProfilePhoto, {includeRelations: true}),
+      },
+    },
+  })
+  async findByUser(
+    @param.path.string('userId') userId: string,
+  //'where'}) filter?: FilterExcludingWhere<ProfilePhoto>
+  ): Promise<Object> {
+   return  this.profilePhotoRepository.find({where:{user:userId}});
+
+  }
+
+
+
+
+
 
   @patch('/profile-photos/{id}')
   @response(204, {
     description: 'ProfilePhoto PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -130,7 +153,7 @@ export class ProfilePhotoController {
     description: 'ProfilePhoto PUT success',
   })
   async replaceById(
-    @param.path.number('id') id: number,
+    @param.path.string('id') id: string,
     @requestBody() profilePhoto: ProfilePhoto,
   ): Promise<void> {
     await this.profilePhotoRepository.replaceById(id, profilePhoto);
@@ -140,7 +163,7 @@ export class ProfilePhotoController {
   @response(204, {
     description: 'ProfilePhoto DELETE success',
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.profilePhotoRepository.deleteById(id);
   }
 }
